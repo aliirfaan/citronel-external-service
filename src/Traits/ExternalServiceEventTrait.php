@@ -1,6 +1,6 @@
 <?php
 
-namespace mt\CitronelExternalService\Traits;
+namespace aliirfaan\CitronelExternalService\Traits;
 
 trait ExternalServiceEventTrait
 {

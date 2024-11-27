@@ -1,6 +1,6 @@
 <?php
 
-namespace mt\CitronelExternalService\Traits;
+namespace aliirfaan\CitronelExternalService\Traits;
 
 use Illuminate\Support\Facades\Log;
 

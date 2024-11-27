@@ -144,9 +144,9 @@ return [
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
-use mt\CitronelExternalService\Contracts\AbstractExternalService;
-use mt\CitronelExternalService\Traits\ExternalServiceLogTrait;
-use mt\CitronelExternalService\Traits\ExternalServiceCacheTrait;
+use aliirfaan\CitronelExternalService\Contracts\AbstractExternalService;
+use aliirfaan\CitronelExternalService\Traits\ExternalServiceLogTrait;
+use aliirfaan\CitronelExternalService\Traits\ExternalServiceCacheTrait;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\TooManyRedirectsException;
 use Illuminate\Http\Client\ClientException;

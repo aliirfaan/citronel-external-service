@@ -1,6 +1,6 @@
 <?php
 
-namespace mt\CitronelExternalService\Contracts;
+namespace aliirfaan\CitronelExternalService\Contracts;
 
 abstract class AbstractExternalService
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace mt\CitronelExternalService;
+namespace aliirfaan\CitronelExternalService;
 
 class CitronelExternalServiceProvider extends \Illuminate\Support\ServiceProvider
 {}
