@@ -1,0 +1,26 @@
+{
+    "name": "aliirfaan/citronel-external-service",
+    "description": "Consume external APIs using a standard interface using Laravel http client. Log requests and responses for API calls in database and log file for auditing/debugging purposes.",
+    "type": "library",
+    "authors": [
+        {
+            "name": "aliirfaan",
+            "email": "aliirfaan.freelance@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "aliirfaan\\CitronelExternalService\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.0.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "aliirfaan\\CitronelExternalService\\CitronelExternalServiceProvider"
+            ]
+        }
+    }
+}
