@@ -16,7 +16,7 @@ abstract class AbstractExternalService
      *
      * endpoint
      *
-     * @var string
+     * @var array
      */
     public $endpoint;
     

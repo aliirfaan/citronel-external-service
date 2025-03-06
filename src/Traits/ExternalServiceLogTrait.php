@@ -135,6 +135,8 @@ trait ExternalServiceLogTrait
 
     /**
      * logResponseChannel
+     * Check global log configuration first
+     * If enabled, check endpoint log configuration
      *
      * @var bool
      */
@@ -145,7 +147,7 @@ trait ExternalServiceLogTrait
         $this->shouldLog = config()->has($this->configKey . '.logging.should_log') ? config($this->configKey . '.logging.should_log') : false;
 
         if ($this->shouldLog) {
-            $this->endpointLogConfigKey = config()->has($this->configKey . '.web_service.endpoints.' . $this->endpoint . '.logging') ? config($this->configKey . '.web_service.endpoints.' . $this->endpoint . '.logging') : null;
+            $this->endpointLogConfigKey = (is_array($this->endpoint) && array_key_exists('logging', $this->endpoint)) ? $this->endpoint['logging']: null;
 
             if (!is_null($this->endpointLogConfigKey)) {
                 $this->shouldLog = config($this->endpointLogConfigKey . '.should_log');

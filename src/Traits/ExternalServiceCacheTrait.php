@@ -29,7 +29,7 @@ trait ExternalServiceCacheTrait
      *
      * endpoint
      *
-     * @var string
+     * @var array
      */
     public $endpoint;
     
@@ -44,7 +44,7 @@ trait ExternalServiceCacheTrait
         $this->shouldCache = config()->has($this->configKey . '.caching.should_cache') ? config($this->configKey . '.caching.should_cache') : false;
 
         if ($this->shouldCache) {
-            $this->endpointCacheConfigKey = config()->has($this->configKey . '.web_service.endpoints.' . $this->endpoint . '.caching') ? config($this->configKey . '.web_service.endpoints.' . $this->endpoint . '.caching') : null;
+            $this->endpointCacheConfigKey = (is_array($this->endpoint) && array_key_exists('caching', $this->endpoint)) ? $this->endpoint['caching']: null;
 
             if (!is_null($this->endpointCacheConfigKey)) {
                 $this->shouldCache = config($this->endpointCacheConfigKey . '.should_cache');
