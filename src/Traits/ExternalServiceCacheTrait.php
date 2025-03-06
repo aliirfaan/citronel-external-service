@@ -46,8 +46,8 @@ trait ExternalServiceCacheTrait
         if ($this->shouldCache) {
             $this->endpointCacheConfigKey = (is_array($this->endpoint) && array_key_exists('caching', $this->endpoint)) ? $this->endpoint['caching']: null;
 
-            if (!is_null($this->endpointCacheConfigKey)) {
-                $this->shouldCache = config($this->endpointCacheConfigKey . '.should_cache');
+            if (!is_array($this->endpointCacheConfigKey) && array_key_exists('should_cache', $this->endpointCacheConfigKey)) {
+                $this->shouldCache = $this->endpointCacheConfigKey['should_cache'];
             }
         }
     }
@@ -67,12 +67,12 @@ trait ExternalServiceCacheTrait
             return false;
         }
 
-        $cacheSeconds = config($this->endpointCacheConfigKey . '.cache_seconds');
+        $cacheSeconds = is_array($this->endpointCacheConfigKey) && array_key_exists('cache_seconds', $this->endpointCacheConfigKey) ? $this->endpointCacheConfigKey['cache_seconds'] : null;
         if (!is_null($seconds)) {
             $cacheSeconds = $seconds;
         }
 
-        $endpointCacheKey = config($this->endpointCacheConfigKey . '.cache_key');
+        $endpointCacheKey = is_array($this->endpointCacheConfigKey) && array_key_exists('cache_key', $this->endpointCacheConfigKey) ? $this->endpointCacheConfigKey['cache_key'] : null;
         if (!is_null($cacheKey)) {
             $endpointCacheKey = $cacheKey;
         }
@@ -90,7 +90,7 @@ trait ExternalServiceCacheTrait
     public function getCachedResponse($cacheKey = null)
     {
         if ($this->shouldCache) {
-            $endpointCacheKey = config($this->endpointCacheConfigKey . '.cache_key');
+            $endpointCacheKey = is_array($this->endpointCacheConfigKey) && array_key_exists('cache_key', $this->endpointCacheConfigKey) ? $this->endpointCacheConfigKey['cache_key'] : null;
             if (!is_null($cacheKey)) {
                 $endpointCacheKey = $cacheKey;
             }
