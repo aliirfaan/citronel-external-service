@@ -17,6 +17,9 @@
     "require": {
         "php": ">=8.0.0"
     },
+    "require-dev": {
+        "aliirfaan/citronel-external-service-generator": "^1.0"
+    },
     "extra": {
         "laravel": {
             "providers": [
