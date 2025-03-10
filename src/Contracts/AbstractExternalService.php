@@ -55,21 +55,21 @@ abstract class AbstractExternalService
      *
      * @var mixed
      */
-    private $username;
+    protected $username;
     
     /**
      * password
      *
      * @var mixed
      */
-    private $password;
+    protected $password;
 
     /**
      * api key if external service uses key authentication
      *
      * @var mixed
      */
-    private $apiKey;
+    protected $apiKey;
 
     /**
      * config file name in /app/config for the external service
