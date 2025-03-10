@@ -135,13 +135,6 @@ trait ExternalServiceLogTrait
     ];
 
     /**
-     * endpoint log config key that overrides the general cache
-     *
-     * @var mixed
-     */
-    public $endpointLogConfigKey;
-
-    /**
      * logResponseChannel
      * Check global log configuration first
      * If enabled, check endpoint log configuration
@@ -155,20 +148,14 @@ trait ExternalServiceLogTrait
         $this->shouldLog = config()->has($this->configKey . '.logging.should_log') ? config($this->configKey . '.logging.should_log') : false;
 
         if ($this->shouldLog) {
-            $this->endpointLogConfigKey = (is_array($this->endpoint) && array_key_exists('logging', $this->endpoint)) ? $this->endpoint['logging']: null;
-
-            if (!is_null($this->endpointLogConfigKey)) {
-                $this->shouldLog = config($this->endpointLogConfigKey . '.should_log');
-            }
+            $this->shouldLog = $this->endpoint['logging']['should_log'];
         }
 
         if ($this->shouldLog) {
             $this->shouldLogRequests = config()->has($this->configKey . '.logging.requests.should_log') ? config($this->configKey . '.logging.requests.should_log') : false;
 
             if ($this->shouldLogRequests) {
-                if (!is_null($this->endpointLogConfigKey)) {
-                    $this->shouldLogRequests = config($this->endpointLogConfigKey . '.requests.should_log');
-                }
+                $this->shouldLogRequests = $this->endpoint['logging']['requests']['should_log'];
             }
 
             $this->logRequestEvent = config()->has($this->configKey . '.logging.requests.event_class') ? config($this->configKey . '.logging.requests.event_class') : null;
@@ -178,9 +165,7 @@ trait ExternalServiceLogTrait
             $this->shouldLogResponses = config()->has($this->configKey . '.logging.responses.should_log') ? config($this->configKey . '.logging.responses.should_log') : false;
 
             if ($this->shouldLogResponses) {
-                if (!is_null($this->endpointLogConfigKey)) {
-                    $this->shouldLogResponses = config($this->endpointLogConfigKey . '.responses.should_log');
-                }
+                $this->shouldLogResponses = $this->endpoint['logging']['responses']['should_log'];
             }
 
             $this->logResponseEvent = config()->has($this->configKey . '.logging.responses.event_class') ? config($this->configKey . '.logging.responses.event_class') : null;
@@ -191,7 +176,7 @@ trait ExternalServiceLogTrait
                 $this->logResponseChannel = config()->has($this->configKey . '.logging.responses.log_response_channel') ? config($this->configKey . '.logging.responses.log_response_channel') : null;
 
                 if(!is_null($this->logResponseChannel)) {
-                    $logEndpointResponseChannel = config()->has($this->endpointLogConfigKey . '.responses.log_response_channel') ? config($this->endpointLogConfigKey . '.responses.log_response_channel') : null;
+                    $logEndpointResponseChannel = array_key_exists('log_response_channel', $this->endpoint['logging']['responses']) ? $this->endpoint['logging']['responses']['log_response_channel'] : null;
                     if (!is_null($logEndpointResponseChannel)) {
                         $this->logResponseChannel = $logEndpointResponseChannel;
                     }

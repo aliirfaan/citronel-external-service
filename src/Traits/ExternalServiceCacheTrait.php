@@ -17,14 +17,6 @@ trait ExternalServiceCacheTrait
      */
     public $shouldCache;
 
-    
-    /**
-     * endpoint cache config key that overrides the general cache
-     *
-     * @var mixed
-     */
-    public $endpointCacheConfigKey;
-
     /**
      *
      * endpoint
@@ -44,11 +36,7 @@ trait ExternalServiceCacheTrait
         $this->shouldCache = config()->has($this->configKey . '.caching.should_cache') ? config($this->configKey . '.caching.should_cache') : false;
 
         if ($this->shouldCache) {
-            $this->endpointCacheConfigKey = (is_array($this->endpoint) && array_key_exists('caching', $this->endpoint)) ? $this->endpoint['caching']: null;
-
-            if (!is_array($this->endpointCacheConfigKey) && array_key_exists('should_cache', $this->endpointCacheConfigKey)) {
-                $this->shouldCache = $this->endpointCacheConfigKey['should_cache'];
-            }
+            $this->shouldCache = $this->endpoint['caching']['should_cache'];
         }
     }
 
@@ -67,12 +55,12 @@ trait ExternalServiceCacheTrait
             return false;
         }
 
-        $cacheSeconds = is_array($this->endpointCacheConfigKey) && array_key_exists('cache_seconds', $this->endpointCacheConfigKey) ? $this->endpointCacheConfigKey['cache_seconds'] : null;
+        $cacheSeconds = $this->endpoint['caching']['cache_seconds'];
         if (!is_null($seconds)) {
             $cacheSeconds = $seconds;
         }
 
-        $endpointCacheKey = is_array($this->endpointCacheConfigKey) && array_key_exists('cache_key', $this->endpointCacheConfigKey) ? $this->endpointCacheConfigKey['cache_key'] : null;
+        $endpointCacheKey = $this->endpoint['caching']['cache_key'];
         if (!is_null($cacheKey)) {
             $endpointCacheKey = $cacheKey;
         }
@@ -90,7 +78,7 @@ trait ExternalServiceCacheTrait
     public function getCachedResponse($cacheKey = null)
     {
         if ($this->shouldCache) {
-            $endpointCacheKey = is_array($this->endpointCacheConfigKey) && array_key_exists('cache_key', $this->endpointCacheConfigKey) ? $this->endpointCacheConfigKey['cache_key'] : null;
+            $endpointCacheKey = $this->endpoint['caching']['cache_key'];
             if (!is_null($cacheKey)) {
                 $endpointCacheKey = $cacheKey;
             }
