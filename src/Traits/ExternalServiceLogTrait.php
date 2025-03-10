@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Log;
 trait ExternalServiceLogTrait
 {
     /**
+     *
+     * endpoint
+     *
+     * @var array
+     */
+    public $endpoint;
+
+    /**
      * dispatch event when request is sent
      *
      * @var object
@@ -191,7 +199,7 @@ trait ExternalServiceLogTrait
             }
         }
 
-        if (!is_null($this->endpoint)) {
+        if (is_array($this->endpoint) && array_key_exists('api_operation', $this->endpoint)) {
             $this->integrationRequestParams['api_operation'] = $this->endpoint['api_operation'];
         }
     }
