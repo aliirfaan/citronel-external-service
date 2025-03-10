@@ -145,32 +145,32 @@ trait ExternalServiceLogTrait
 
     public function setIntegrationLogConfig()
     {
+        // assign events and models even when endpoint null for event caching
+        $this->logRequestEvent = config()->has($this->configKey . '.logging.requests.event_class') ? config($this->configKey . '.logging.requests.event_class') : null;
+        $this->logResponseEvent = config()->has($this->configKey . '.logging.responses.event_class') ? config($this->configKey . '.logging.responses.event_class') : null;
+
+        $this->logRequestModel = config()->has($this->configKey . '.logging.requests.model') ? config($this->configKey . '.logging.requests.model') : null;
+        $this->logResponseModel = config()->has($this->configKey . '.logging.responses.model') ? config($this->configKey . '.logging.responses.model') : null;
+
+        
         $this->shouldLog = config()->has($this->configKey . '.logging.should_log') ? config($this->configKey . '.logging.should_log') : false;
 
-        if ($this->shouldLog) {
+        if ($this->shouldLog && !is_null($this->endpoint)) {
             $this->shouldLog = $this->endpoint['logging']['should_log'];
         }
 
-        if ($this->shouldLog) {
+        if ($this->shouldLog && !is_null($this->endpoint)) {
             $this->shouldLogRequests = config()->has($this->configKey . '.logging.requests.should_log') ? config($this->configKey . '.logging.requests.should_log') : false;
 
             if ($this->shouldLogRequests) {
                 $this->shouldLogRequests = $this->endpoint['logging']['requests']['should_log'];
             }
 
-            $this->logRequestEvent = config()->has($this->configKey . '.logging.requests.event_class') ? config($this->configKey . '.logging.requests.event_class') : null;
-
-            $this->logRequestModel = config()->has($this->configKey . '.logging.requests.model') ? config($this->configKey . '.logging.requests.model') : null;
-
             $this->shouldLogResponses = config()->has($this->configKey . '.logging.responses.should_log') ? config($this->configKey . '.logging.responses.should_log') : false;
 
             if ($this->shouldLogResponses) {
                 $this->shouldLogResponses = $this->endpoint['logging']['responses']['should_log'];
             }
-
-            $this->logResponseEvent = config()->has($this->configKey . '.logging.responses.event_class') ? config($this->configKey . '.logging.responses.event_class') : null;
-
-            $this->logResponseModel = config()->has($this->configKey . '.logging.responses.model') ? config($this->configKey . '.logging.responses.model') : null;
 
             if ($this->shouldLogResponses) {
                 $this->logResponseChannel = config()->has($this->configKey . '.logging.responses.log_response_channel') ? config($this->configKey . '.logging.responses.log_response_channel') : null;
