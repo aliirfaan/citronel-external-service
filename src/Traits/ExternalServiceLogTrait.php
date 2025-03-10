@@ -115,11 +115,11 @@ trait ExternalServiceLogTrait
      * @var array
      */
     public $integrationRequestParams = [
-        'api_operation' => null,
-        'url' => null,
-        'raw' => null,
-        'correlation_token' => null,
-        'leg_correlation_token' => null,
+        'api_operation',
+        'url',
+        'raw',
+        'correlation_token',
+        'leg_correlation_token',
     ];
 
     /**
@@ -128,10 +128,10 @@ trait ExternalServiceLogTrait
      * @var array
      */
     public $integrationResponseParams = [
-        'raw' => null,
-        'correlation_token' => null,
-        'leg_correlation_token' => null,
-        'http_status' => null,
+        'raw',
+        'correlation_token',
+        'leg_correlation_token',
+        'http_status',
     ];
 
     /**

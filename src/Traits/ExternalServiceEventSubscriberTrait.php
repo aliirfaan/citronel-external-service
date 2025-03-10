@@ -59,8 +59,7 @@ trait ExternalServiceEventSubscriberTrait
     public function requestSaveData($eventData)
     {
         $eventResultIntegration = $eventData['result']['request']['integration'];
-
-        return $this->getFillableAttributes($this->logRequestModel, $eventResultIntegration);
+        return $this->getFillableAttributes(new $this->logRequestModel, $eventResultIntegration);
     }
 
     /**
@@ -74,7 +73,7 @@ trait ExternalServiceEventSubscriberTrait
     {
         $eventResultIntegration = $eventData['result']['response']['integration'];
 
-        return $this->getFillableAttributes($this->logResponseModel, $eventResultIntegration);
+        return $this->getFillableAttributes(new $this->logResponseModel, $eventResultIntegration);
     }
 
     /**
@@ -99,15 +98,15 @@ trait ExternalServiceEventSubscriberTrait
     public function subscribe($events)
     {
         $events->listen(
-            get_class($this->logRequestEvent),
+            $this->logRequestEvent,
             [get_class($this),
-            'handleLogRequest']
+            'handleRequestSent']
         );
 
         $events->listen(
-            get_class($this->logResponseEvent),
+            $this->logResponseEvent,
             [get_class($this),
-            'handleLogResponse']
+            'handleResponseReceived']
         );
     }
 }
