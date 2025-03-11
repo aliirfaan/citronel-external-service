@@ -7,7 +7,7 @@ Consume external APIs using a standard interface.
 * Takes configuration from a configuration file that follows a standard format.
 * Helper function for caching responses.
 * Helper classes for events and subscribers.
-* **You can use `aliirfaan/citronel-external-service-generator` package to generate config file, service class, migrations, models, events, listeners for your external service.**
+* **You can use `aliirfaan/citronel-external-service-generator` package as dev dependency to generate config file, service class, migrations, models, events, listeners for your external service.**
 
 ## Requirements
 
@@ -20,6 +20,12 @@ Consume external APIs using a standard interface.
 
 ```bash
  $ composer require aliirfaan/citronel-external-service
+```
+
+* Install the package with dev dependency:
+
+```bash
+ $ composer require aliirfaan/citronel-external-service --dev
 ```
 
 ## Contracts
@@ -220,13 +226,7 @@ class HttpbinPlatformService extends AbstractExternalService
             ->send($this->endpoint['method'], $requestUrl)
             ->throw();
             
-        } catch (ClientException $e) {
-            report($e);
-
-        } catch (ServerException $e) {
-            report($e);
-
-        } catch (TooManyRedirectsException  $e) {
+        } catch (RequestException $e) {
             report($e);
 
             // @todo handle

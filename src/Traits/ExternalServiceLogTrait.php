@@ -183,10 +183,6 @@ trait ExternalServiceLogTrait
                 }
             }
         }
-
-        if (is_array($this->endpoint) && array_key_exists('api_operation', $this->endpoint)) {
-            $this->integrationRequestParams['api_operation'] = $this->endpoint['api_operation'];
-        }
     }
 
     public function setIntegrationPruneConfig()
