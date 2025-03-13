@@ -136,8 +136,7 @@ trait ExternalServiceLogTrait
 
     /**
      * logResponseChannel
-     * Check global log configuration first
-     * If enabled, check endpoint log configuration
+     * Can be used to log responses to a specific channel for debugging purposes
      *
      * @var bool
      */
@@ -271,6 +270,8 @@ trait ExternalServiceLogTrait
             'http_status' => $this->httpStatus,
         ];
 
-        Log::channel($this->logResponseChannel)->info($logMessage, $logContext);
+        if (!is_null($this->logResponseChannel)) {
+            Log::channel($this->logResponseChannel)->info($logMessage, $logContext);
+        }
     }
 }
