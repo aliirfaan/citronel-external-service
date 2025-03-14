@@ -148,10 +148,12 @@ trait ExternalServiceLogTrait
         $this->logRequestEvent = config()->has($this->configKey . '.logging.requests.event_class') ? config($this->configKey . '.logging.requests.event_class') : null;
         $this->logResponseEvent = config()->has($this->configKey . '.logging.responses.event_class') ? config($this->configKey . '.logging.responses.event_class') : null;
 
-        $this->logRequestModel = config()->has($this->configKey . '.logging.requests.model') ? config($this->configKey . '.logging.requests.model') : null;
-        $this->logResponseModel = config()->has($this->configKey . '.logging.responses.model') ? config($this->configKey . '.logging.responses.model') : null;
+        $logRequestModelClass = config()->has($this->configKey . '.logging.requests.model') ? config($this->configKey . '.logging.requests.model') : null;
+        $logResponseModelClass = config()->has($this->configKey . '.logging.responses.model') ? config($this->configKey . '.logging.responses.model') : null;
+    
+        $this->logRequestModel = $logRequestModelClass ? app()->makeWith($logRequestModelClass, []) : null;
+        $this->logResponseModel = $logResponseModelClass ? app()->makeWith($logResponseModelClass, []) : null;
 
-        
         $this->shouldLog = config()->has($this->configKey . '.logging.should_log') ? config($this->configKey . '.logging.should_log') : false;
 
         if ($this->shouldLog && !is_null($this->endpoint)) {

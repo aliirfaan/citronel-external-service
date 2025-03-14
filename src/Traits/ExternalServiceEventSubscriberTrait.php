@@ -59,7 +59,7 @@ trait ExternalServiceEventSubscriberTrait
     public function requestSaveData($eventData)
     {
         $eventResultIntegration = $eventData['result']['request']['integration'];
-        return $this->getFillableAttributes(new $this->logRequestModel, $eventResultIntegration);
+        return $this->getFillableAttributes($this->logRequestModel, $eventResultIntegration);
     }
 
     /**
@@ -73,7 +73,7 @@ trait ExternalServiceEventSubscriberTrait
     {
         $eventResultIntegration = $eventData['result']['response']['integration'];
 
-        return $this->getFillableAttributes(new $this->logResponseModel, $eventResultIntegration);
+        return $this->getFillableAttributes($this->logResponseModel, $eventResultIntegration);
     }
 
     /**
