@@ -200,6 +200,8 @@ class HttpbinPlatformService extends AbstractExternalService
         $legCorrelationToken = 'uuid';
         $processExtra['leg_correlation_token'] = $legCorrelationToken;
 
+        $this->correlationToken = $correlationToken;
+
         try {
             // return cached response if available
             $getCachedResponseResult = $this->getCachedResponse();
@@ -209,10 +211,12 @@ class HttpbinPlatformService extends AbstractExternalService
 
             $requestUrl = $this->baseUrl . $this->endpoint['endpoint'];
 
-            $data['result']['request']['integration']['url'] = $requestUrl;
-            $data['result']['request']['integration']['correlation_token'] = $correlationToken;
+            $this->integrationRequestParams['url'] = $requestUrl;
+            $this->integrationRequestParams['correlation_token'] = $correlationToken;
 
-            $data['result']['request']['integration']['leg_correlation_token'] = $legCorrelationToken;
+            $$this->integrationRequestParams['leg_correlation_token'] = $legCorrelationToken;
+
+            $data['result']['request']['integration'] = $this->integrationRequestParams;
 
             // dispatch event
             $this->dispatchRequestSentEvent($data);
@@ -292,15 +296,15 @@ class HttpbinPlatformService extends AbstractExternalService
         $data['result']['response']['integration'] = $this->integrationResponseParams;
 
         // set response correlation early to be able to trace in case of failure
-        $data['result']['response']['integration']['correlation_token'] = $this->correlationToken;
+        $this->integrationResponseParams['correlation_token'] = $this->correlationToken;
 
-        $data['result']['response']['integration']['leg_correlation_token'] = $this->legCorrelationToken;
+        $this->integrationResponseParams['leg_correlation_token'] = $this->legCorrelationToken;
 
         $this->rawResponse = !is_null($response) ? (string) $response->getBody() : null;
-        $data['result']['response']['integration']['raw'] = $this->rawResponse;
+        $this->integrationResponseParams['raw'] = $this->rawResponse;
 
         $this->httpStatus  = !is_null($response) ? $response->getStatusCode() : null;
-        $data['result']['response']['integration']['http_status'] = $this->httpStatus;
+        $this->integrationResponseParams['http_status'] = $this->httpStatus;
 
         $this->logToChannel();
 
@@ -334,11 +338,13 @@ class HttpbinPlatformService extends AbstractExternalService
         if (is_null($data['errors'])) {
             $data['success'] = true;
             $data['result']['data'] = $responseBody;
-            $data['result']['response']['integration']['success'] = true;
+            $this->integrationResponseParams['success'] = true;
 
             // @todo include endpoint specific response params
-            $data['result']['response']['integration']['origin'] = $responseBody['origin'] ?? null;
+            $this->integrationResponseParams['origin'] = $responseBody['origin'] ?? null;
         }
+
+        $data['result']['response']['integration'] = $this->integrationResponseParams;
 
         $this->dispatchResponseReceivedEvent($data);
 
@@ -379,7 +385,9 @@ class HttpbinPlatformService extends AbstractExternalService
             $eventKey = $extra['event_key'];
         }
 
-        $data['result']['response']['integration']['origin'] = array_key_exists('origin', $responseBody) ? $responseBody['origin'] : null;
+        $this->integrationResponseParams['origin'] = array_key_exists('origin', $responseBody) ? $responseBody['origin'] : null;
+
+        $data['result']['response']['integration'] = $this->integrationResponseParams;
 
         // generate code
 
